@@ -16,7 +16,9 @@ var currentPlayer = document.querySelector(`#current-${activePlayer}`);
 var newGameButton = document.querySelector('.btn-new');
 
 document.querySelector('.dice').style.display = 'none';
-document.querySelector(`.player-${activePlayer}-panel`).classList.add('active');
+
+document.querySelector(`.player-0-panel`).classList.add('active');
+document.querySelector(`.player-1-panel`).classList.remove('active');
 
 
 
@@ -37,8 +39,10 @@ function newGame() {
   document.getElementById('score-1').textContent = 0;
   document.querySelector('.dice').style.display = 'none';
   document.querySelector('#name-0').textContent = 'Player 1'; 
-  document.querySelector('#name-1').textContent = 'Player 2';   
+  document.querySelector('#name-1').textContent = 'Player 2'; 
   activePlayer = 0;
+  document.querySelector(`.player-${activePlayer}-panel`).classList.add('active');  
+
   playersScore = [0,0];
   rollDiceButton.style.display = 'block';
   holdTurnButton.style.display = 'block';
@@ -93,24 +97,26 @@ function handleHoldTurn() {
 
   if ( playersScore[activePlayer] >= 21 ) {
     youDidIt();
-  }
-
-  console.log('after youWon()');
-
-  // 3. Show Running Total
-  showRunningTotalPlayerScore();
-
-  // 4. Change Player
-  if ( activePlayer === 1 ) {
-    activePlayer = 0;
   } else {
-    activePlayer = 1;
+    console.log('after youWon()');
+
+    // 3. Show Running Total
+    showRunningTotalPlayerScore();
+
+    // 4. Change Player
+    if ( activePlayer === 1 ) {
+      activePlayer = 0;
+    } else {
+      activePlayer = 1;
+    }
+
+    showActivePlayer();
+
+    // 5. Reset Temp Score to 0
+    tempPlayerScore.textContent = 0;
   }
 
-  showActivePlayer();
-
-  // 5. Reset Temp Score to 0
-  tempPlayerScore.textContent = 0;
+  
 }
 
 /*********************************************************/
@@ -151,6 +157,9 @@ function youDidIt() {
   
   document.querySelector(`#name-${winner}`).textContent = 'Winner'; 
   document.querySelector(`#name-${loser}`).textContent = 'Loser'; 
+
+  document.querySelector(`.player-${winner}-panel`).classList.add('active');
+  document.querySelector(`.player-${loser}-panel`).classList.remove('active');
 
   rollDiceButton.style.display = 'none';
   holdTurnButton.style.display = 'none';
